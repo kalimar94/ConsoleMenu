@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassyConsoleMenu", "ClassyConsoleMenu\ClassyConsoleMenu.csproj", "{FE9F5E67-6E70-4DA6-A33F-0929FE545EE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleMenu", "ConsoleMenu\ConsoleMenu.csproj", "{611783CF-6A25-4BF9-96B4-A29AB2D25A71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE9F5E67-6E70-4DA6-A33F-0929FE545EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9F5E67-6E70-4DA6-A33F-0929FE545EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9F5E67-6E70-4DA6-A33F-0929FE545EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9F5E67-6E70-4DA6-A33F-0929FE545EE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{611783CF-6A25-4BF9-96B4-A29AB2D25A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{611783CF-6A25-4BF9-96B4-A29AB2D25A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{611783CF-6A25-4BF9-96B4-A29AB2D25A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{611783CF-6A25-4BF9-96B4-A29AB2D25A71}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
