@@ -5,19 +5,24 @@ namespace ConsoleMenu.Core.Input
     public class MenuInputManager : IMenuInputManager
     {
         private int selectedIndex;
-        private int optionsCount;
+
+        public int OptionsCount { get; set; }
 
         public bool CycleSelection { get; set; }
 
         public IHotkeyManger HotKeyManager { get; private set; }
 
+
         public MenuInputManager(int optionsCount, IHotkeyManger hotkeyManger = null, int startIndex = 0, bool cycleSelection = false)
         {
-            this.optionsCount = optionsCount;
+            this.OptionsCount = optionsCount;
             this.selectedIndex = startIndex;
             this.HotKeyManager = hotkeyManger;
             this.CycleSelection = cycleSelection;
         }
+
+        public void ResetSelection()
+             => this.selectedIndex = 0;
 
         public EventArgs WaitForNextEvent()
         {
@@ -31,13 +36,13 @@ namespace ConsoleMenu.Core.Input
                     if (key.Key == ConsoleKey.UpArrow)
                     {
                         if (this.selectedIndex > 0) this.selectedIndex--;
-                        else if (CycleSelection) this.selectedIndex = optionsCount - 1;
+                        else if (CycleSelection) this.selectedIndex = OptionsCount - 1;
 
                         return new ChangeSelectionEventArgs(this.selectedIndex);
                     }
                     else if (key.Key == ConsoleKey.DownArrow)
                     {
-                        if (this.selectedIndex < optionsCount - 1) this.selectedIndex++;
+                        if (this.selectedIndex < OptionsCount - 1) this.selectedIndex++;
                         else if (CycleSelection) this.selectedIndex = 0;
 
                         return new ChangeSelectionEventArgs(this.selectedIndex);
@@ -48,10 +53,12 @@ namespace ConsoleMenu.Core.Input
                     }
                     else if (hotkeyChar.HasValue)
                     {
-                        return new SelectionChosenEventArgs(this.selectedIndex);
+                        return new SelectionChosenEventArgs(hotkeyChar.Value);
                     }
                 }
             }
         }
+
+
     }
 }

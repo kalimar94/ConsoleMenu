@@ -48,7 +48,6 @@ namespace ConsoleMenu.Core.Menus
                 else if (inputData is SelectionChosenEventArgs itemChosen)
                 {
                     MenuItems[selectedIndex].IsSelected = false;
-                    MenuItems[itemChosen.ChosenIndex].IsSelected = true;
 
                     OnItemChosen?.Invoke(this, itemChosen);
                     return MenuItems[itemChosen.ChosenIndex];

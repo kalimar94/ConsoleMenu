@@ -1,19 +1,22 @@
 ﻿using ConsoleMenu.Core.Items;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleMenu.Core.Print
 {
     public class MenuPrinter : IMenuPrinter
     {
+        private ConsoleColor backgroundColor;
+        private ConsoleColor foregroundColor;
+
         public int LeftOffset { get; private set; }
 
         public int TopOffset { get; private set; }
 
         public MenuPrinter(int leftOffset = 0, int topOffset = 0)
         {
-
+            this.backgroundColor = Console.BackgroundColor;
+            this.foregroundColor = Console.ForegroundColor;
         }
 
 
@@ -34,18 +37,24 @@ namespace ConsoleMenu.Core.Print
             {
                 Console.SetCursorPosition(LeftOffset, TopOffset + i + extraLines);      // print the menu on the user-defined position
 
-                if (menuItems[i].IsSelected)                                            // the selected option is printed with inverted colors
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                }
+                if (menuItems[i].IsSelected)
+                    this.InverseColor();
 
                 Console.WriteLine(menuItems[i].Text);
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.BackgroundColor = ConsoleColor.Black;
+                this.ResetColor();
             }
+        }
 
+        public void InverseColor()
+        {
+            Console.ForegroundColor = backgroundColor;
+            Console.BackgroundColor = foregroundColor;
+        }
 
+        public void ResetColor()
+        {
+            Console.ForegroundColor = foregroundColor;
+            Console.BackgroundColor = backgroundColor;
         }
     }
 }
