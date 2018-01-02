@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace ConsoleMenu.Core.Menus
 {
+    /// <summary>
+    /// A menu that contains only <see cref="ActionMenuItem"/>.
+    /// Each item has an action defined that will be executed on selection
+    /// </summary>
     public class ActionMenu : Menu
     {
         public ActionMenu(IReadOnlyList<ActionMenuItem> menuItems, IMenuPrinter printer, IMenuInputManager input)

@@ -18,5 +18,11 @@ namespace ConsoleMenu.Core.Items
         public override string ToString()
          => $"Item: {Text}  Id : {Id}";
 
+        public override bool Equals(object obj)
+        {
+            if (obj is MenuItem other)
+                return this.Id.Equals(other.Id);
+            else return false;
+        }
     }
 }

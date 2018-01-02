@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Core.Input;
+﻿using ConsoleMenu.Core.Factories;
+using ConsoleMenu.Core.Input;
 using ConsoleMenu.Core.Items;
 using ConsoleMenu.Core.Print;
 using System;
@@ -6,11 +7,18 @@ using System.Collections.Generic;
 
 namespace ConsoleMenu.Core.Menus
 {
+    /// <summary>
+    /// A menu that contains either <see cref="ActionMenuItem"/> or <see cref="SubmenuItem"/>.
+    /// Thus each item is either a submenu or an action that gets executed on selection
+    /// </summary>
     public class ActionTreeMenu : Menu
     {
-        public ActionTreeMenu(IReadOnlyList<MenuItem> menuItems, IMenuPrinter printer, IMenuInputManager input)
-            : base(menuItems, printer, input)
+        private IInputManagerFactory inputFactory;
+
+        public ActionTreeMenu(IReadOnlyList<MenuItem> menuItems, IMenuPrinter printer, IInputManagerFactory inputFactory)
+            : base(menuItems, printer, inputFactory.Create(menuItems))
         {
+            this.inputFactory = inputFactory;
         }
 
         public void RunActionMenu()
@@ -20,7 +28,7 @@ namespace ConsoleMenu.Core.Menus
             if (selection is SubmenuItem subMenu)
             {
                 this.MenuItems = subMenu.SubMenu;
-                this.input.HotKeyManager.ReInitialize(this.MenuItems);
+                this.input = inputFactory.Create(this.MenuItems);
             }
             else if (selection is ActionMenuItem actionItem)
             {

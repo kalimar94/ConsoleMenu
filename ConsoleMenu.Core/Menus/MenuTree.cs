@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Core.Input;
+﻿using ConsoleMenu.Core.Factories;
+using ConsoleMenu.Core.Input;
 using ConsoleMenu.Core.Items;
 using ConsoleMenu.Core.Print;
 using System.Collections.Generic;
@@ -13,38 +14,37 @@ namespace ConsoleMenu.Core.Menus
     {
         const string BACK_BTN_ID = "BACK_BTN";
 
-        Stack<IReadOnlyList<MenuItem>> previousMenus;
+        public string BackButtonText { get; set; } = "Back";
 
-        public MenuTree(IReadOnlyList<MenuItem> menuItems, IMenuPrinter printer, IMenuInputManager input)
-            : base(menuItems, printer, input)
+        private Stack<IReadOnlyList<MenuItem>> previousMenus;
+        private IInputManagerFactory inputFactory;
+
+        public MenuTree(IReadOnlyList<MenuItem> menuItems, IMenuPrinter printer, IInputManagerFactory inputFactory)
+            : base(menuItems, printer, inputFactory.Create(menuItems))
         {
             previousMenus = new Stack<IReadOnlyList<MenuItem>>();
+            this.inputFactory = inputFactory;
         }
 
-        private static IReadOnlyList<MenuItem> AddBackItem(IReadOnlyList<MenuItem> menuItems)
+        private IReadOnlyList<MenuItem> AddBackOption(IReadOnlyList<MenuItem> menuItems)
         {
-            var list = new List<MenuItem>(menuItems);
-            list.Add(new MenuItem { Text = "Back", Id = BACK_BTN_ID });
-
-            return list;
+            return menuItems.Concat(new[] { new MenuItem { Text = BackButtonText , Id = BACK_BTN_ID } }).ToList();
         }
 
         private void UpdateCurrentMenu(IReadOnlyList<MenuItem> menuItems)
         {
             this.MenuItems = menuItems;
-            this.input.OptionsCount = this.MenuItems.Count;
-            this.input.HotKeyManager.ReInitialize(this.MenuItems);
-            this.input.ResetSelection();
+            this.input = this.inputFactory.Create(MenuItems);
         }
 
         public override MenuItem RunToSelection()
         {
             var selection = base.RunToSelection();
 
-            if (selection is SubmenuItem subMenu)
+            if (selection is SubmenuItem menuItem)
             {
-                this.previousMenus.Push(this.MenuItems);
-                this.UpdateCurrentMenu(AddBackItem(subMenu.SubMenu));
+                this.previousMenus.Push(this.MenuItems); // Save current context in stack
+                this.UpdateCurrentMenu(AddBackOption(menuItem.SubMenu));
 
                 return this.RunToSelection();
             }

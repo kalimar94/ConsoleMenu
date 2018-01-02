@@ -12,6 +12,5 @@ namespace ConsoleMenu.Core.Input
 
         EventArgs WaitForNextEvent();
 
-        void ResetSelection();
     }
 }

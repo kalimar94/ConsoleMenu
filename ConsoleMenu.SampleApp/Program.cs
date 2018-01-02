@@ -1,5 +1,4 @@
-﻿using ConsoleMenu.Core.Input;
-using ConsoleMenu.Core.Input.Hotkeys;
+﻿using ConsoleMenu.Core.Factories;
 using ConsoleMenu.Core.Items;
 using ConsoleMenu.Core.Menus;
 using ConsoleMenu.Core.Print;
@@ -34,11 +33,11 @@ namespace ConsoleMenu.SampleApp
                 new SubmenuItem { Text = "SubMenu", HotKey = 's', SubMenu = subMenu }
             };
 
-            var hotKeyManager = new HotkeyManager(menuItems);
-            var inputManager = new MenuInputManager(menuItems.Length, hotKeyManager, 0, true);
-            var printer = new MenuPrinter();
 
-            var menu = new MenuTree(menuItems, printer, inputManager);
+            var inputManagerFactory = new InputManagerFactory(startIndex: 0, cycleSelection: true);
+            var printer = new MenuPrinter(padding: 20);
+
+            var menu = new MenuTree(menuItems, printer, inputManagerFactory);
 
             var selectedItem = menu.RunToSelection();
 

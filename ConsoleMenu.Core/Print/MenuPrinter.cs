@@ -13,12 +13,17 @@ namespace ConsoleMenu.Core.Print
 
         public int TopOffset { get; private set; }
 
-        public MenuPrinter(int leftOffset = 0, int topOffset = 0)
+        public int Padding { get; private set; }
+
+        public MenuPrinter(int leftOffset = 0, int topOffset = 0, int padding = 0)
         {
             this.backgroundColor = Console.BackgroundColor;
             this.foregroundColor = Console.ForegroundColor;
-        }
 
+            this.LeftOffset = leftOffset;
+            this.TopOffset = topOffset;
+            this.Padding = padding;
+        }
 
         public void PrintMenuItems(IReadOnlyList<MenuItem> menuItems, string header = null, string foolter = null)
         {
@@ -37,21 +42,29 @@ namespace ConsoleMenu.Core.Print
             {
                 Console.SetCursorPosition(LeftOffset, TopOffset + i + extraLines);      // print the menu on the user-defined position
 
-                if (menuItems[i].IsSelected)
-                    this.InverseColor();
-
-                Console.WriteLine(menuItems[i].Text);
+                PrintItemText(menuItems[i]);
                 this.ResetColor();
             }
         }
 
-        public void InverseColor()
+
+        protected void PrintItemText(MenuItem item)
+        {
+            if (item.IsSelected)
+                this.InverseColor();
+
+            var padText = new string(' ', this.Padding);
+
+            Console.WriteLine($"{padText}{item.Text}{padText}");
+        }
+
+        protected void InverseColor()
         {
             Console.ForegroundColor = backgroundColor;
             Console.BackgroundColor = foregroundColor;
         }
 
-        public void ResetColor()
+        protected void ResetColor()
         {
             Console.ForegroundColor = foregroundColor;
             Console.BackgroundColor = backgroundColor;

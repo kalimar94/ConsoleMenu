@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ConsoleMenu.Core.Input
 {
@@ -21,9 +22,10 @@ namespace ConsoleMenu.Core.Input
             this.CycleSelection = cycleSelection;
         }
 
-        public void ResetSelection()
-             => this.selectedIndex = 0;
-
+        /// <summary>
+        /// Blocks execution until the next event occurs - which can be either change of selection 
+        /// or confirming/chosing the selected item
+        /// </summary>
         public EventArgs WaitForNextEvent()
         {
             while (true)
@@ -56,6 +58,7 @@ namespace ConsoleMenu.Core.Input
                         return new SelectionChosenEventArgs(hotkeyChar.Value);
                     }
                 }
+                Thread.Sleep(10);  // This should greatly reduce CPU usage
             }
         }
 
