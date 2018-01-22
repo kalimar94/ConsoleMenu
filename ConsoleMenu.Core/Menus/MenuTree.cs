@@ -12,11 +12,11 @@ namespace ConsoleMenu.Core.Menus
     /// </summary>
     public class MenuTree : Menu
     {
-        const string BACK_BTN_ID = "BACK_BTN";
 
-        public string BackButtonText { get; set; } = "Back";
+        public MenuItem DefaultBackitem { get; set; } = new MenuItem { Text = "Back", Id = "BACK_BTN" };
 
         private Stack<IReadOnlyList<MenuItem>> previousMenus;
+
         private IInputManagerFactory inputFactory;
 
         public MenuTree(IReadOnlyList<MenuItem> menuItems, IMenuPrinter printer, IInputManagerFactory inputFactory)
@@ -28,7 +28,7 @@ namespace ConsoleMenu.Core.Menus
 
         private IReadOnlyList<MenuItem> AddBackOption(IReadOnlyList<MenuItem> menuItems)
         {
-            return menuItems.Concat(new[] { new MenuItem { Text = BackButtonText , Id = BACK_BTN_ID } }).ToList();
+            return DefaultBackitem != null ? menuItems.Concat(new[] { DefaultBackitem }).ToList() : menuItems;
         }
 
         private void UpdateCurrentMenu(IReadOnlyList<MenuItem> menuItems)
@@ -48,7 +48,7 @@ namespace ConsoleMenu.Core.Menus
 
                 return this.RunToSelection();
             }
-            else if (selection.Id == BACK_BTN_ID)
+            else if (selection.Id == DefaultBackitem?.Id)
             {
                 this.UpdateCurrentMenu(this.previousMenus.Pop());
                 return this.RunToSelection();

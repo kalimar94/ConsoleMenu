@@ -8,8 +8,10 @@ namespace ConsoleMenu.Core.Input
 
         bool CycleSelection { get; set; }
 
-        IHotkeyManger HotKeyManager { get; }
-
+        /// <summary>
+        /// Blocks execution until the next event occurs - which can be either change of selection 
+        /// or confirming/chosing the hovered item
+        /// </summary>
         EventArgs WaitForNextEvent();
 
     }

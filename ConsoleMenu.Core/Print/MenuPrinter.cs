@@ -7,6 +7,7 @@ namespace ConsoleMenu.Core.Print
     public class MenuPrinter : IMenuPrinter
     {
         private ConsoleColor backgroundColor;
+
         private ConsoleColor foregroundColor;
 
         public int LeftOffset { get; private set; }
@@ -17,8 +18,8 @@ namespace ConsoleMenu.Core.Print
 
         public MenuPrinter(int leftOffset = 0, int topOffset = 0, int padding = 0)
         {
-            this.backgroundColor = Console.BackgroundColor;
-            this.foregroundColor = Console.ForegroundColor;
+            this.backgroundColor = ConsoleColor.Black;
+            this.foregroundColor = ConsoleColor.White;
 
             this.LeftOffset = leftOffset;
             this.TopOffset = topOffset;
@@ -54,8 +55,18 @@ namespace ConsoleMenu.Core.Print
                 this.InverseColor();
 
             var padText = new string(' ', this.Padding);
+            var hotKey = item.HotKey.ToString();
 
-            Console.WriteLine($"{padText}{item.Text}{padText}");
+            var printText = item.Text;
+
+            if (item.HotKey != default(char))
+            {
+                printText = item.Text.Contains(hotKey) ?
+                       item.Text.Replace(hotKey, $"[{item.HotKey}]")
+                     : item.Text + $"  ({item.HotKey})";
+            }
+
+            Console.WriteLine($"{padText}{printText}{padText}");
         }
 
         protected void InverseColor()

@@ -24,5 +24,9 @@ namespace ConsoleMenu.Core.Items
                 return this.Id.Equals(other.Id);
             else return false;
         }
+
+        public override int GetHashCode()
+            => this.Id.GetHashCode();
+
     }
 }
