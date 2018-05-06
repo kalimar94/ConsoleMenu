@@ -10,46 +10,62 @@ namespace ConsoleMenu.Core.Print
 
         private ConsoleColor foregroundColor;
 
-        public int LeftOffset { get; private set; }
+        public int LeftOffset { get; set; }
 
-        public int TopOffset { get; private set; }
+        public int TopOffset { get; set; }
+ 
+        public int Padding { get; set; }
 
-        public int Padding { get; private set; }
+        public string Header { get; set; }
 
-        public MenuPrinter(int leftOffset = 0, int topOffset = 0, int padding = 0)
+        public string Footer { get; set; }
+
+        public MenuPrinter()
         {
             this.backgroundColor = Console.BackgroundColor;
             this.foregroundColor = Console.ForegroundColor;
-
-            this.LeftOffset = leftOffset;
-            this.TopOffset = topOffset;
-            this.Padding = padding;
         }
 
-        public void PrintMenuItems(IReadOnlyList<MenuItem> menuItems, string header = null, string foolter = null)
+        public void PrintMenuItems(IReadOnlyList<MenuItem> menuItems)
         {
             Console.Clear();
-            int extraLines = 0;           // if there are any extra lines because of the header that could interfere in the positioning
 
-            if (header != null)
-            {
-                extraLines = 2;
-                Console.SetCursorPosition(LeftOffset, TopOffset);         // print the menu on the user-defined position
-                Console.WriteLine("{0}:", header);                                      // print header
-                Console.WriteLine(new string('-', Console.WindowWidth));                // print a line of '-' chars
-            }
+            PrintHeader();
 
             for (int i = 0; i < menuItems.Count; i++)
             {
-                Console.SetCursorPosition(LeftOffset, TopOffset + i + extraLines);      // print the menu on the user-defined position
+                Console.SetCursorPosition(LeftOffset, Console.CursorTop);      // print the menu on the user-defined position
 
                 PrintItemText(menuItems[i]);
                 this.ResetColor();
             }
+
+              PrintFooter();
         }
 
 
-        protected void PrintItemText(MenuItem item)
+        /// <summary>  Prints the header and returns the number of lines occupied by the header </summary>
+        protected virtual void PrintHeader()
+        {
+            if (!string.IsNullOrWhiteSpace(Header))
+            {
+                Console.SetCursorPosition(LeftOffset, TopOffset);         // print the menu on the user-defined position
+                Console.WriteLine(Header);                                // print header
+                Console.WriteLine();
+            }
+        }
+
+        protected virtual void PrintFooter()
+        {
+            if (!string.IsNullOrWhiteSpace(Footer))
+            {
+                Console.WriteLine();
+                Console.SetCursorPosition(LeftOffset, Console.CursorTop); 
+                Console.WriteLine(Footer);
+            }
+        }
+
+        protected virtual void PrintItemText(MenuItem item)
         {
             if (item.IsSelected)
                 this.InverseColor();
@@ -70,13 +86,13 @@ namespace ConsoleMenu.Core.Print
             Console.WriteLine($"{padText}{printText}{padText}");
         }
 
-        protected void InverseColor()
+        protected virtual void InverseColor()
         {
             Console.ForegroundColor = backgroundColor;
             Console.BackgroundColor = foregroundColor;
         }
 
-        protected void ResetColor()
+        protected virtual void ResetColor()
         {
             Console.ForegroundColor = foregroundColor;
             Console.BackgroundColor = backgroundColor;

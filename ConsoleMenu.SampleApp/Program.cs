@@ -13,7 +13,7 @@ namespace ConsoleMenu.SampleApp
         {
             MenuDemo();
             Console.ReadLine();
-            
+
             ActionMenuDemo();
             Console.ReadLine();
         }
@@ -44,7 +44,7 @@ namespace ConsoleMenu.SampleApp
                 { 's', "SubMenu", subMenu }
             };
 
-            var menu = MenuFactory.CreateMenu(menuItems);
+            var menu = MenuFactory.CreateMenu(menuItems, "Start Menu Demo:", "Menu footer", padding: 20);
             var selectedItem = menu.RunToSelection();
 
             Console.WriteLine("Selected: " + selectedItem);
@@ -69,7 +69,7 @@ namespace ConsoleMenu.SampleApp
                 { "Submenu", subMenu },
             };
 
-            MenuFactory.CreateActionMenu(mainMenu).RunActionMenu();
+            MenuFactory.CreateActionMenu(mainMenu, padding: 20).RunActionMenu();
         }
     }
 }
