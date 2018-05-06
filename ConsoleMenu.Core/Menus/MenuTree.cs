@@ -12,9 +12,6 @@ namespace ConsoleMenu.Core.Menus
     /// </summary>
     public class MenuTree : Menu
     {
-
-        public MenuItem DefaultBackitem { get; set; } = new MenuItem { Text = "Back", Id = "BACK_BTN" };
-
         private Stack<IReadOnlyList<MenuItem>> previousMenus;
 
         private IInputManagerFactory inputFactory;
@@ -28,7 +25,7 @@ namespace ConsoleMenu.Core.Menus
 
         private IReadOnlyList<MenuItem> AddBackOption(IReadOnlyList<MenuItem> menuItems)
         {
-            return DefaultBackitem != null ? menuItems.Concat(new[] { DefaultBackitem }).ToList() : menuItems;
+            return MenuItem.DefaultBackitem != null ? menuItems.Concat(new[] { MenuItem.DefaultBackitem }).ToList() : menuItems;
         }
 
         private void UpdateCurrentMenu(IReadOnlyList<MenuItem> menuItems)
@@ -43,14 +40,14 @@ namespace ConsoleMenu.Core.Menus
 
             if (selection is SubmenuItem menuItem)
             {
-                this.previousMenus.Push(this.MenuItems); // Save current context in stack
+                this.previousMenus.Push(this.MenuItems); // Save current context in stack, so that we can go back
                 this.UpdateCurrentMenu(AddBackOption(menuItem.SubMenu));
 
                 return this.RunToSelection();
             }
-            else if (selection.Id == DefaultBackitem?.Id)
+            else if (selection.Id == MenuItem.DefaultBackitem?.Id)
             {
-                this.UpdateCurrentMenu(this.previousMenus.Pop());
+                this.UpdateCurrentMenu(this.previousMenus.Pop()); // Restore the last saved state
                 return this.RunToSelection();
             }
             else

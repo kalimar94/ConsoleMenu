@@ -14,7 +14,6 @@ namespace ConsoleMenu.Core.Menus
         protected IMenuInputManager input;
 
         public IReadOnlyList<MenuItem> MenuItems { get; protected set; }
-
         public event SelectionChangedEvent OnSelectionChange;
         public event SelectionChosenEvent OnItemChosen;
 

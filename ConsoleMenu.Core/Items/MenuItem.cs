@@ -28,5 +28,7 @@ namespace ConsoleMenu.Core.Items
         public override int GetHashCode()
             => this.Id.GetHashCode();
 
+
+        public static MenuItem DefaultBackitem = new MenuItem { Text = "Back", Id = "BACK_BTN" };
     }
 }

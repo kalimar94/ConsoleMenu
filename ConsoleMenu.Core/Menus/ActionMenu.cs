@@ -11,15 +11,15 @@ namespace ConsoleMenu.Core.Menus
     /// </summary>
     public class ActionMenu : Menu
     {
-        public ActionMenu(IReadOnlyList<ActionMenuItem> menuItems, IMenuPrinter printer, IMenuInputManager input)
+        public ActionMenu(IReadOnlyList<MenuItem> menuItems, IMenuPrinter printer, IMenuInputManager input)
             : base(menuItems, printer, input)
         {
         }
 
-        public void RunActionMenu()
+        public virtual void RunActionMenu()
         {
             var selection = base.RunToSelection() as ActionMenuItem;
-            selection.Action?.Invoke();
+            selection?.Action?.Invoke();
         }
     }
 }

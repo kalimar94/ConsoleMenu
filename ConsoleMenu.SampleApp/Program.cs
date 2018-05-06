@@ -8,7 +8,17 @@ namespace ConsoleMenu.SampleApp
 {
     class Program
     {
-        static void Main(string[] args)
+
+        static void Main()
+        {
+            MenuDemo();
+            Console.ReadLine();
+            
+            ActionMenuDemo();
+            Console.ReadLine();
+        }
+
+        static void MenuDemo()
         {
             var subSubMenu = new[]
             {
@@ -17,32 +27,49 @@ namespace ConsoleMenu.SampleApp
                 new MenuItem { Text = "Sub Submenu Item 3", HotKey = '3' },
             };
 
-            var subMenu = new[]
+            // shorthand initialization:
+            var subMenu = new MenuItemList
             {
-                new MenuItem { Text = "Submenu Item 1", HotKey = '1' },
-                new MenuItem { Text = "Submenu Item 2", HotKey = '2' },
-                new SubmenuItem { Text = "Sub sub menu", HotKey = 's', SubMenu = subSubMenu },
+               { '1',  "Submenu Item 1" },
+               { '2', "Submenu Item 2" },
+               { 's', "Sub sub menu",subSubMenu },
             };
 
-            var menuItems = new[]
+            var menuItems = new MenuItemList
             {
-                new MenuItem { Text = "Item 1", HotKey = '1' },
-                new MenuItem { Text = "Item 2", HotKey = '2' },
-                new MenuItem { Text = "Item 3", HotKey = '3' },
-                new MenuItem { Text = "Item 4", HotKey = '4' },
-                new SubmenuItem { Text = "SubMenu", HotKey = 's', SubMenu = subMenu }
+                { '1', "Item 1" },
+                { '2', "Item 2" },
+                { '3', "Item 3" },
+                { 'T', "Test" },
+                { 's', "SubMenu", subMenu }
             };
 
-
-            var inputManagerFactory = new InputManagerFactory(startIndex: 0, cycleSelection: true);
-            var printer = new MenuPrinter(padding: 20);
-
-            var menu = new MenuTree(menuItems, printer, inputManagerFactory);
-
+            var menu = MenuFactory.CreateMenu(menuItems);
             var selectedItem = menu.RunToSelection();
 
             Console.WriteLine("Selected: " + selectedItem);
-            Console.ReadLine();
+        }
+
+        static void ActionMenuDemo()
+        {
+            var subMenu = new MenuItemList
+            {
+                { "SubItem1", () => Console.WriteLine("Invoked action of SubItem1") },
+                { "SubItem2", () => Console.WriteLine("Invoked action of SubItem2") },
+                { "SubItem3", () => Console.WriteLine("Invoked action of SubItem3") },
+                { "SubItem4", () => Console.WriteLine("Invoked action of SubItem4") }
+            };
+
+            var mainMenu = new MenuItemList
+            {
+                { "Item1", () => Console.WriteLine("Invoked action of Item1") },
+                { "Item2", () => Console.WriteLine("Invoked action of Item2") },
+                { "Item3", () => Console.WriteLine("Invoked action of Item3") },
+                { "Item4", () => Console.WriteLine("Invoked action of Item4") },
+                { "Submenu", subMenu },
+            };
+
+            MenuFactory.CreateActionMenu(mainMenu).RunActionMenu();
         }
     }
 }
