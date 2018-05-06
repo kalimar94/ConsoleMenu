@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ConsoleMenu.Core</id>
+    <version>1.0.0-alpha</version>
+    <title>ConsoleMenu Core</title>
+    <authors>Kalin Marinov</authors>
+    <owners>kalin-marinov</owners>
+    <projectUrl>https://github.com/kalin-marinov/ConsoleMenu</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A simple console menu</description>
+    <copyright>Copyright 2018</copyright>
+    <tags>console menu</tags>
+  </metadata>
+</package>
