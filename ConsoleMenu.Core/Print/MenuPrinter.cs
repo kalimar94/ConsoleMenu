@@ -18,8 +18,8 @@ namespace ConsoleMenu.Core.Print
 
         public MenuPrinter(int leftOffset = 0, int topOffset = 0, int padding = 0)
         {
-            this.backgroundColor = ConsoleColor.Black;
-            this.foregroundColor = ConsoleColor.White;
+            this.backgroundColor = Console.BackgroundColor;
+            this.foregroundColor = Console.ForegroundColor;
 
             this.LeftOffset = leftOffset;
             this.TopOffset = topOffset;
@@ -59,6 +59,7 @@ namespace ConsoleMenu.Core.Print
 
             var printText = item.Text;
 
+            // If the hotkey characted is found in the text it will be surrounded in brackets
             if (item.HotKey != default(char))
             {
                 printText = item.Text.Contains(hotKey) ?

@@ -25,19 +25,22 @@ namespace ConsoleMenu.Core.Input.Hotkeys
 
             for (int i = 0; i < menuItems.Count; i++)
             {
-                hotkeyIndexes.Add(menuItems[i].HotKey, i);
-                hotkeyIds.Add(menuItems[i].HotKey, menuItems[i].Id);
+                if (menuItems[i].HotKey != default(char))
+                {
+                    hotkeyIndexes.Add(Char.ToLower(menuItems[i].HotKey), i);
+                    hotkeyIds.Add(Char.ToLower(menuItems[i].HotKey), menuItems[i].Id);
+                }
             }
         }
 
         public int? GetItemIndexForKey(char key)
         {
-            return hotkeyIndexes.ContainsKey(key) ? hotkeyIndexes[key] as int? : null;
+            return hotkeyIndexes.ContainsKey(Char.ToLower(key)) ? hotkeyIndexes[key] as int? : null;
         }
 
         public string GetItemIdForKey(char key)
         {
-            return hotkeyIds.ContainsKey(key) ? hotkeyIds[key] : null;
+            return hotkeyIds.ContainsKey(Char.ToLower(key)) ? hotkeyIds[key] : null;
         }
     }
 }
